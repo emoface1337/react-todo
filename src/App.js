@@ -33,24 +33,24 @@ export default class App extends Component {
                         items={[
                             {
                                 "name": "Покупки",
-                                "color": "#B6E6BD"
+                                "color": "green"
                             },
                             {
                                 "name": "Фронтенд",
-                                "color": "#FFBBCC",
+                                "color": "blue",
                                 active: true
                             },
                             {
                                 "name": "Фильмы и сериалы",
-                                "color": "#64C4ED"
+                                "color": "pink"
                             },
                             {
                                 "name": "Книги",
-                                "color": "#42B883"
+                                "color": "lime"
                             },
                             {
                                 "name": "Личное",
-                                "color": "#C9D1D3"
+                                "color": "grey"
                             }
                         ]}
                         isRemovable

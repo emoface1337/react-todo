@@ -1,6 +1,7 @@
 import React from "react"
 import List from "../List/List"
 import './AddList.sass'
+import Circle from "../Badge/Circle";
 
 class AddList extends React.Component {
 
@@ -27,17 +28,16 @@ class AddList extends React.Component {
                                       strokeLinejoin="round"/>
                             </svg>
                         }]}
-                    onClick={() => this.setState({visible: true})} //todo
+                    onClick={() => this.setState({visible: true})} //todo (visible: !this.state.visible)
                 />
                 {
                     this.state.visible &&
                     <div className="add-list__popup">
                         <input type="text" className={"field"} placeholder={"Название списка"}/>
-                        <div className="add-list__popup-colors">
-                            <ul>
-                                <li></li>
-                                <li></li>
-                            </ul>
+                        <div className="add-list__popup-colors d-flex justify-content-between align-items-center">
+                            {this.props.colors.map(color => (
+                                <li><Circle color={color.name}/></li>
+                            ))}
                         </div>
                         <button className={"add-button"}>Добавить</button>
                     </div>

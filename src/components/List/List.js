@@ -1,6 +1,7 @@
 import React from "react"
 import classNames from 'classnames'
 import './List.sass'
+import Circle from '../Badge/Circle'
 
 const List = ({items, isRemovable, onClick}) => {
     return (
@@ -10,7 +11,7 @@ const List = ({items, isRemovable, onClick}) => {
                         className={classNames("d-flex align-items-center", item.className, {active: item.active})}
                     >
                         {item.icon !== undefined ? <i>{item.icon}</i> :
-                            <i className={"badge"} style={{backgroundColor: item.color}}> </i>}
+                            <Circle color={item.color}/>}
                         <span>{item.name}</span>
                     </li>
                 )
