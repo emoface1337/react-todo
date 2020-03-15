@@ -6,11 +6,6 @@ import List from "./components/List/List"
 import AddList from "./components/AddList/AddList"
 
 export default class App extends Component {
-
-    state = {
-        test: true
-    }
-
     render() {
         return (
             <div className="todo-app">
