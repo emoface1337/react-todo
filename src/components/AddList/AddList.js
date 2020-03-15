@@ -1,18 +1,24 @@
 import React from "react"
 import List from "../List/List"
 import './AddList.sass'
-import Circle from "../Badge/Circle";
+import Circle from "../Circle/Circle";
+import closeIcon from '../../image/close.svg'
 
 class AddList extends React.Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            visible: false
+            visible: false,
+            selectedColor: 2
         }
     }
 
     render() {
+        const selectColor = (color) => {
+            this.setState({selectedColor: color})
+        }
+
         return (
             <div className="add-list">
                 <List
@@ -28,15 +34,23 @@ class AddList extends React.Component {
                                       strokeLinejoin="round"/>
                             </svg>
                         }]}
-                    onClick={() => this.setState({visible: true})} //todo (visible: !this.state.visible)
+                    onClick={() => this.setState({visible: !this.state.visible})} //todo (visible: !this.state.visible)
                 />
                 {
                     this.state.visible &&
                     <div className="add-list__popup">
+                        <img src={closeIcon} alt="Закрыть" className="add-list__popup-close-button"
+                        onClick={() => this.setState({visible: false})}
+                        />
                         <input type="text" className={"field"} placeholder={"Название списка"}/>
                         <div className="add-list__popup-colors d-flex justify-content-between align-items-center">
                             {this.props.colors.map(color => (
-                                <li><Circle color={color.name}/></li>
+                                <Circle
+                                    key={color.id}
+                                    color={color.name}
+                                    onClick={() => selectColor(color.id)}
+                                    className={this.state.selectedColor === color.id && "active"}
+                                />
                             ))}
                         </div>
                         <button className={"add-button"}>Добавить</button>
