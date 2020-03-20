@@ -1,16 +1,22 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+import axios from 'axios'
 import './App.sass'
-import db from './db'
 import headIcon from './image/list.svg'
-import List from "./components/List/List"
-import AddList from "./components/AddList/AddList"
-import Tasks from "./components/Tasks/Tasks";
+import {List, AddList, Tasks} from './components'
 
 const App = () => {
-    const [lists, setLists] = useState(db.lists.map(item => {
-        item.color = db.colors.find(color => color.id === item.colorId).name
-        return item
-    }))
+
+    const [lists, setLists] = useState(null)
+    const [colors, setColors] = useState(null)
+
+    useEffect(() => {
+        axios.get('http://localhost:3001/lists?_expand=color&_embed=tasks').then(({data}) => {
+            setLists(data)
+        })
+        axios.get('http://localhost:3001/colors').then(({data}) => {
+            setColors(data)
+        })
+    }, [])
 
     const onAddList = (newItem) => {
         const newList = [
@@ -32,18 +38,23 @@ const App = () => {
                                 alt="Все задачи"/>
                         }]}
                 />
-                <List
-                    items={lists}
-                    onRemove={(item) => console.log(item)} //todo
-                    isRemovable
-                />
+                {lists ? (
+                    <List items={lists}
+                          isRemovable
+                          onRemove={id => {
+                              setLists(lists.filter(item => item.id !== id))
+                          }}
+                    />
+                ) : (
+                    'Загрузка...'
+                )}
                 <AddList
-                    colors={db.colors}
+                    colors={colors}
                     onAdd={onAddList}
                 />
             </div>
             <div className="todo-tasks">
-                <Tasks/>
+                {lists && <Tasks list={lists[1]}/>}
             </div>
         </div>
     )
