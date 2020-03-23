@@ -35,23 +35,32 @@ ol, ul, dl
   box-sizing: border-box
   border-radius: 4px
   padding: 8px 12px
+  width: 100%
 
   &:focus
     border-color: #aeaeae
 
-.add-button
-  background: #4DD599
+.button
   border-radius: 4px
   border: none
-  color: white
+  color: #FFFFFF
   padding: 10px 20px
-  //cursor: pointer
+  cursor: pointer
+  &--grey
+    background: #f4f6f8
+    color: #C7C9CB
+    &:hover
+      background: darken(#f4f6f8, 2%)
+    &:active
+      background: darken(#f4f6f8, 5%)
 
-  &:hover
-    background: darken(#4DD599, 10%)
+  &--green
+    background: #4DD599
+    &:hover
+      background: darken(#4DD599, 10%)
 
-  &:active
-    background: darken(#4DD599, 20%)
+    &:active
+      background: darken(#4DD599, 20%)
 
 .todo-tasks
   flex: 1

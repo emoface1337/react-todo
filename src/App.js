@@ -8,6 +8,7 @@ const App = () => {
 
     const [lists, setLists] = useState(null)
     const [colors, setColors] = useState(null)
+    const [activeItem, setActiveItem] = useState(null)
 
     useEffect(() => {
         axios.get('http://localhost:3001/lists?_expand=color&_embed=tasks').then(({data}) => {
@@ -18,10 +19,30 @@ const App = () => {
         })
     }, [])
 
-    const onAddList = (newItem) => {
+    const onAddList = (newListItem) => {
         const newList = [
-            ...lists, newItem
+            ...lists, newListItem
         ]
+        setLists(newList)
+    }
+
+    const onAddTask = (listId, newTask) => {
+        const newList = lists.map(item => {
+                if (item.id === listId)
+                    item.tasks = [...item.tasks, newTask]
+                return item
+            }
+        )
+        setLists(newList)
+    }
+
+    const onEditListTitle = (id, title) => {
+        const newList = lists.map(item => {
+            if (item.id === id) {
+                item.name = title
+            }
+            return item
+        })
         setLists(newList)
     }
 
@@ -29,32 +50,44 @@ const App = () => {
         <div className="todo-app d-flex">
             <div className="todo-sidebar">
                 <List
-                    items={[
-                        {
-                            className: "sidebar-list__head",
-                            name: "Все задачи",
-                            icon: <img
-                                src={headIcon}
-                                alt="Все задачи"/>
-                        }]}
+                    items={
+                        [
+                            {
+                                active: true,
+                                className: "sidebar-list__head",
+                                name: "Все задачи",
+                                icon: <img
+                                    src={headIcon}
+                                    alt="Все задачи"/>
+                            }
+                        ]}
                 />
-                {lists ? (
-                    <List items={lists}
-                          isRemovable
-                          onRemove={id => {
-                              setLists(lists.filter(item => item.id !== id))
-                          }}
-                    />
-                ) : (
-                    'Загрузка...'
-                )}
+                {
+                    lists ? (
+                        <List
+                            items={lists}
+                            onRemove={id => {
+                                setLists(lists.filter(item => item.id !== id))
+                            }}
+                            onClickItem={item => {
+                                setActiveItem(item)
+                            }}
+                            activeItem={activeItem}
+                            isRemovable
+                        />
+                    ) : (
+                        'Загрузка...'
+                    )}
                 <AddList
                     colors={colors}
                     onAdd={onAddList}
                 />
             </div>
             <div className="todo-tasks">
-                {lists && <Tasks list={lists[1]}/>}
+                {
+                    lists && activeItem &&
+                    <Tasks list={activeItem} onEditTitle={onEditListTitle} onAddTask={onAddTask}/>
+                }
             </div>
         </div>
     )

@@ -75,7 +75,8 @@ const AddList = ({colors, onAdd}) => {
                     </div>
                     <button
                         onClick={addList}
-                        className={'add-button'}>
+                        className={'button button--green'}
+                        style={{width: '100%'}}>
                         {isLoading ? 'Добавляем...' : 'Добавить'}
                     </button>
 
