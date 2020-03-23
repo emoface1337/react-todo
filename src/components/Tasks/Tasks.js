@@ -6,10 +6,10 @@ import editSvg from '../../../src/image/edit.svg'
 
 import AddTask from "./AddTask";
 
-const Tasks = ({list, onEditTitle, onAddTask}) => {
+const Tasks = ({list, onEditTitle, onAddTask, empty}) => {
 
     const editTitle = () => {
-        const newTitle = prompt('Zagolovok', list.name)
+        const newTitle = prompt('Новое название', list.name)
         if (newTitle !== "") {
             onEditTitle(list.id, newTitle)
             axios.patch('http://localhost:3001/lists/' + list.id, {
@@ -22,12 +22,14 @@ const Tasks = ({list, onEditTitle, onAddTask}) => {
 
     return (
         <div className='tasks'>
-            <h2 className='tasks__title'>
+            <h2 className='tasks__title' style={{color: list.color.hex}}>
                 {(list.name)}
                 <img onClick={editTitle} src={editSvg} alt='Edit icon'/>
             </h2>
             <div className='tasks-list'>
-                {!list.tasks.length && <h2>Задач нет</h2>}
+                {
+                    !empty && !list.tasks.length && <h2>Задач нет</h2>
+                }
                 {
                     list.tasks.map((task, index) => {
                         return (

@@ -1,14 +1,18 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
+import {Route, useHistory} from 'react-router-dom'
+
+import {List, AddList, Tasks} from './components'
+
 import './App.sass'
 import headIcon from './image/list.svg'
-import {List, AddList, Tasks} from './components'
 
 const App = () => {
 
     const [lists, setLists] = useState(null)
     const [colors, setColors] = useState(null)
     const [activeItem, setActiveItem] = useState(null)
+    const history = useHistory()
 
     useEffect(() => {
         axios.get('http://localhost:3001/lists?_expand=color&_embed=tasks').then(({data}) => {
@@ -24,6 +28,11 @@ const App = () => {
             ...lists, newListItem
         ]
         setLists(newList)
+    }
+
+    const onRemoveList = (id) => {
+        console.log(lists, id)
+        setLists(lists.filter(item => item.id !== id))
     }
 
     const onAddTask = (listId, newTask) => {
@@ -46,10 +55,18 @@ const App = () => {
         setLists(newList)
     }
 
+    useEffect(() => {
+        const listId = history.location.pathname.split('lists/')[1]
+        lists && setActiveItem(lists.find(list => list.id === Number(listId)))
+    }, [lists, history.location.pathname])
+
     return (
         <div className="todo-app d-flex">
             <div className="todo-sidebar">
                 <List
+                    onClickItem={list => {
+                        history.push('/')
+                    }}
                     items={
                         [
                             {
@@ -66,11 +83,9 @@ const App = () => {
                     lists ? (
                         <List
                             items={lists}
-                            onRemove={id => {
-                                setLists(lists.filter(item => item.id !== id))
-                            }}
-                            onClickItem={item => {
-                                setActiveItem(item)
+                            onRemove={onRemoveList}
+                            onClickItem={list => {
+                                history.push(`/lists/${list.id}`)
                             }}
                             activeItem={activeItem}
                             isRemovable
@@ -84,6 +99,18 @@ const App = () => {
                 />
             </div>
             <div className="todo-tasks">
+                <Route exact path="/">
+                    {
+                        lists && lists.map(list =>
+                            <Tasks
+                                list={list}
+                                onEditTitle={onEditListTitle}
+                                onAddTask={onAddTask}
+                                empty
+                            />
+                        )
+                    }
+                </Route>
                 {
                     lists && activeItem &&
                     <Tasks list={activeItem} onEditTitle={onEditListTitle} onAddTask={onAddTask}/>

@@ -30,12 +30,13 @@ const AddList = ({colors, onAdd}) => {
         axios.post('http://localhost:3001/lists', {
             name: inputValue, colorId: selectedColor
         }).then(({data}) => {
-            const listObj = {...data, color: {name: colors.find(color => color.id === selectedColor).name}}
-            onAdd(listObj)
+            const newList = {...data, color: {name: colors.find(color => color.id === selectedColor).name}, tasks: []}
+            onAdd(newList)
             onClose()
-        }).finally(() => {
-            setLoading(false)
-        })
+        }).catch(() => alert("Ошибка при добавлении задачи"))
+            .finally(() => {
+                setLoading(false)
+            })
     }
 
     return (
@@ -58,11 +59,18 @@ const AddList = ({colors, onAdd}) => {
             {
                 isVisible &&
                 <div className='add-list__popup'>
-                    <img src={closeIcon} alt='Закрыть' className='add-list__popup-close-button'
-                         onClick={onClose}
+                    <img
+                        src={closeIcon}
+                        alt='Закрыть' c
+                        lassName='add-list__popup-close-button'
+                        onClick={onClose}
                     />
-                    <input onChange={e => setInputValue(e.target.value)} value={inputValue} type='text'
-                           className={'field'} placeholder={'Название списка'}/>
+                    <input
+                        onChange={e => setInputValue(e.target.value)}
+                        value={inputValue} type='text'
+                        className={'field'}
+                        placeholder={'Название списка'}
+                    />
                     <div className='add-list__popup-colors d-flex justify-content-between align-items-center'>
                         {colors.map(color => (
                             <Circle
