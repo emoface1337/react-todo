@@ -39,7 +39,8 @@ const AddTask = ({list, onAddTask}) => {
                 (<div className="tasks-form__add-block">
                     <input value={inputValue} onChange={e => setInputValue(e.target.value)} type='text'
                            className={'field'} placeholder={'Текст задачи'}/>
-                    <button onClick={addTask} className="button button--green">{isLoading ? 'Добавляем...' : 'Добавить задачу'}</button>
+                    <button onClick={addTask}
+                            className="button button--green">{isLoading ? 'Добавляем...' : 'Добавить задачу'}</button>
                     <button onClick={toggleVisible} className="button button--grey">Отмена</button>
                 </div>)
             }

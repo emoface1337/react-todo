@@ -31,7 +31,6 @@ const App = () => {
     }
 
     const onRemoveList = (id) => {
-        console.log(lists, id)
         setLists(lists.filter(item => item.id !== id))
     }
 
@@ -45,6 +44,66 @@ const App = () => {
         setLists(newList)
     }
 
+    const onRemoveTask = (listId, taskId) => {
+        const newList = lists.map(list => {
+            if (list.id === listId) {
+                list.tasks = list.tasks.filter(task => task.id !== taskId)
+            }
+            return list
+        })
+        setLists(newList)
+        axios
+            .delete('http://localhost:3001/tasks/' + taskId)
+            .catch(() => {
+                console.log('не удалось удалить задачу')
+            })
+    }
+
+    const onEditTask = (listId, taskObj) => {
+        const newTaskText = window.prompt('Новый текст задачи: ', taskObj.text)
+
+        if (!newTaskText)
+            return
+
+        const newList = lists.map(list => {
+            if (list.id === listId) {
+                list.tasks = list.tasks.map(task => {
+                    if (task.id === taskObj.id) {
+                        task.text = newTaskText
+                    }
+                    return task
+                })
+            }
+            return list
+        })
+        setLists(newList)
+        axios
+            .patch('http://localhost:3001/tasks/' + taskObj.id, {text: newTaskText})
+            .catch(() => {
+                console.log('не удалось обновить задачу')
+            })
+    }
+
+    const onCompleteTask = (listId, taskId, completed) => {
+        const newList = lists.map(list => {
+            if (list.id === listId) {
+                lists.tasks = list.tasks.map(task => {
+                    if (task.id === taskId) {
+                        task.completed = completed
+                    }
+                    return task
+                })
+            }
+            return list
+        })
+        setLists(newList)
+        axios
+            .patch('http://localhost:3001/tasks/' + taskId, {completed})
+            .catch(() => {
+                console.log('не удалось отметить задачу выполненной')
+            })
+    }
+
     const onEditListTitle = (id, title) => {
         const newList = lists.map(item => {
             if (item.id === id) {
@@ -54,6 +113,7 @@ const App = () => {
         })
         setLists(newList)
     }
+
 
     useEffect(() => {
         const listId = history.location.pathname.split('lists/')[1]
@@ -70,7 +130,7 @@ const App = () => {
                     items={
                         [
                             {
-                                active: true,
+                                active: history.location.pathname === "/",
                                 className: "sidebar-list__head",
                                 name: "Все задачи",
                                 icon: <img
@@ -103,18 +163,29 @@ const App = () => {
                     {
                         lists && lists.map(list =>
                             <Tasks
+                                key={list.id}
                                 list={list}
                                 onEditTitle={onEditListTitle}
                                 onAddTask={onAddTask}
+                                onRemoveTask
+                                onEditTask={onEditTask}
                                 empty
                             />
                         )
                     }
                 </Route>
-                {
-                    lists && activeItem &&
-                    <Tasks list={activeItem} onEditTitle={onEditListTitle} onAddTask={onAddTask}/>
-                }
+                <Route path={'/lists/:id'}>
+                    {
+                        lists && activeItem &&
+                        <Tasks
+                            list={activeItem}
+                            onAddTask={onAddTask}
+                            onRemoveTask={onRemoveTask}
+                            onEditTask={onEditTask}
+                            onCompleteTask={onCompleteTask}
+                            onEditTitle={onEditListTitle}/>
+                    }
+                </Route>
             </div>
         </div>
     )

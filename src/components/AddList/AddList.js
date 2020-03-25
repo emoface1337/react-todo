@@ -30,7 +30,8 @@ const AddList = ({colors, onAdd}) => {
         axios.post('http://localhost:3001/lists', {
             name: inputValue, colorId: selectedColor
         }).then(({data}) => {
-            const newList = {...data, color: {name: colors.find(color => color.id === selectedColor).name}, tasks: []}
+            const color = colors.find(color => color.id === selectedColor)
+            const newList = {...data, color, tasks: []}
             onAdd(newList)
             onClose()
         }).catch(() => alert("Ошибка при добавлении задачи"))
@@ -61,8 +62,8 @@ const AddList = ({colors, onAdd}) => {
                 <div className='add-list__popup'>
                     <img
                         src={closeIcon}
-                        alt='Закрыть' c
-                        lassName='add-list__popup-close-button'
+                        alt='Закрыть'
+                        className='add-list__popup-close-button'
                         onClick={onClose}
                     />
                     <input

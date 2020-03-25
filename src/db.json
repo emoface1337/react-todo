@@ -4,6 +4,16 @@
       "id": 2,
       "name": "Фронтенд",
       "colorId": 4
+    },
+    {
+      "name": "Книги",
+      "colorId": 2,
+      "id": 3
+    },
+    {
+      "name": "123",
+      "colorId": 3,
+      "id": 4
     }
   ],
   "tasks": [
@@ -23,7 +33,7 @@
       "id": 3,
       "listId": 2,
       "text": "ReactJS Hooks",
-      "completed": true
+      "completed": false
     },
     {
       "id": 4,
@@ -33,9 +43,33 @@
     },
     {
       "listId": 2,
-      "text": "dasasd",
+      "text": "123213",
       "completed": false,
       "id": 5
+    },
+    {
+      "listId": 3,
+      "text": "Мгла",
+      "completed": false,
+      "id": 6
+    },
+    {
+      "listId": 3,
+      "text": "Гарри Поттер",
+      "completed": false,
+      "id": 7
+    },
+    {
+      "listId": 4,
+      "text": "123",
+      "completed": false,
+      "id": 8
+    },
+    {
+      "listId": 4,
+      "text": "321123123",
+      "completed": false,
+      "id": 9
     }
   ],
   "colors": [
