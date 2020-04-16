@@ -169,6 +169,7 @@ const App = () => {
                                 onAddTask={onAddTask}
                                 onRemoveTask
                                 onEditTask={onEditTask}
+                                onCompleteTask={onCompleteTask}
                                 empty
                             />
                         )

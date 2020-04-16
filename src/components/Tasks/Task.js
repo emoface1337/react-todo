@@ -2,9 +2,9 @@ import React from 'react'
 import editSvg from '../../image/edit.svg'
 import removeSvg from '../../image/remove.svg'
 
-const Task = ({id, text, completed, list, onRemove, onEdit, onComplete}) => {
+const Task = ({id, text, completed, list, onRemove, onEdit, onCompleteTask}) => {
     const onChangeCheckbox = e => {
-        onComplete(list.id, id, e.target.checked)
+        onCompleteTask(list.id, id, e.target.checked)
     }
 
     return (

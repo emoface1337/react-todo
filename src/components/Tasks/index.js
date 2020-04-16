@@ -7,7 +7,7 @@ import editSvg from '../../../src/image/edit.svg'
 import AddTask from "./AddTask";
 import Task from "./Task";
 
-const Tasks = ({list, onAddTask, onRemoveTask, onEditTitle, onEditTask,onCompleteTask, empty}) => {
+const Tasks = ({list, onAddTask, onRemoveTask, onEditTitle, onEditTask, onCompleteTask, empty}) => {
 
     const editTitle = () => {
         const newTitle = prompt('Новое название', list.name)
@@ -38,7 +38,7 @@ const Tasks = ({list, onAddTask, onRemoveTask, onEditTitle, onEditTask,onComplet
                             list={list}
                             onRemove={onRemoveTask}
                             onEdit={onEditTask}
-                            onComplete={onCompleteTask}
+                            onCompleteTask={onCompleteTask}
                             {...task} />
                     ))
                 }
